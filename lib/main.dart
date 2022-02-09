@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.blueGrey,
       ),
       home: const MyHomePage(title: 'Welcome'),
     );
@@ -48,22 +48,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  double _counter = 0;
+  double _othercounter = 0;
 
-  void _incrementCounter() {
+  void _resetCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  void removeCounter() {
-    setState(() {
-      _counter--;
+      _counter = 0;
+      _othercounter = 0;
     });
   }
 
@@ -76,15 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
-            const Spacer(),
-            IconButton(icon: const Icon(Icons.search), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text('Testing App'),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -106,28 +95,50 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Testing Flutter if is good enough'),
             const Text(
-              'You have pushed the button this many times:',
+              'The number is: ',
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            ElevatedButton.icon(
-              onPressed: removeCounter,
-              icon: const Icon(Icons.remove, size: 18),
-              label: const Text("Reduce Number"),
+            const Text('and'),
+            Text(
+              '$_othercounter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Slider(
+              value: _counter,
+              min: 0,
+              max: 100,
+              label: _counter.round().toString(),
+              onChanged: (value) {
+                setState(() {
+                  _counter = value;
+                });
+              },
+            ),
+            Slider(
+              value: _othercounter,
+              min: 0,
+              max: 100,
+              divisions: 5,
+              label: _othercounter.round().toString(),
+              onChanged: (value) {
+                setState(() {
+                  _othercounter = value;
+                });
+              },
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _incrementCounter,
-        icon: const Icon(Icons.add),
-        label: const Text('Add number'),
+        onPressed: _resetCounter,
+        icon: const Icon(Icons.restore),
+        label: const Text('Reset'),
+        backgroundColor: Colors.red[800],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
